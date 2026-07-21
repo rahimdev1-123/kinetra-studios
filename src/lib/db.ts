@@ -1,13 +1,37 @@
-import { PrismaClient } from '@prisma/client'
+import "server-only";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined
+import { createClient } from "@supabase/supabase-js";
+
+/**
+ * Server-only Supabase client.
+ *
+ * Despite the existing filename "db.ts", this file now connects directly
+ * to Supabase instead of Prisma.
+ *
+ * Never import this file into a client component.
+ */
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseSecretKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl) {
+  throw new Error("Missing SUPABASE_URL environment variable.");
 }
 
-export const db =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: ['query'],
-  })
+if (!supabaseSecretKey) {
+  throw new Error(
+    "Missing SUPABASE_SERVICE_ROLE_KEY environment variable.",
+  );
+}
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+export const db = createClient(
+  supabaseUrl,
+  supabaseSecretKey,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
+  },
+);

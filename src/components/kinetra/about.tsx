@@ -33,7 +33,7 @@ export function About() {
         <div>
           <Reveal>
             <h2 className="kin-display text-print text-4xl sm:text-5xl lg:text-6xl">
-              Behind the edit
+              OUR STUDIO 
             </h2>
           </Reveal>
           <Reveal delay={0.1}>

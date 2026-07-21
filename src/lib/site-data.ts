@@ -1,17 +1,16 @@
 /**
  * Kinetra — central content source.
  *
- * Every `[PLACEHOLDER: ...]` token is searchable so real assets, copy, prices,
- * and contact details can be dropped in later without hunting through JSX.
+ * Positioning:
+ * Premium cinematic post-production studio for creators and brands.
+ * The website sells outcomes, demonstrates craft, and drives qualified inquiries.
  */
 
 /* ------------------------------------------------------------------ *
- * TIMELINE — the signature concept.
- * Each section is a "timeline marker" with a timecode + label.
- * `seconds` is the real time the playhead should read when the section
- * tops the viewport. Total reel length = 02:14 (134s).
+ * TIMELINE
  * ------------------------------------------------------------------ */
-export const TOTAL_SECONDS = 134; // 02:14
+
+export const TOTAL_SECONDS = 134;
 
 export type TimelineMarker = {
   tc: string;
@@ -25,7 +24,7 @@ export const TIMELINE: TimelineMarker[] = [
   { tc: "00:24", label: "WORK", id: "work", seconds: 24 },
   { tc: "00:52", label: "SERVICES", id: "services", seconds: 52 },
   { tc: "01:20", label: "ABOUT", id: "about", seconds: 80 },
-  { tc: "01:38", label: "SAID", id: "said", seconds: 98 },
+  { tc: "01:38", label: "CLIENTS", id: "said", seconds: 98 },
   { tc: "01:52", label: "PROCESS", id: "process", seconds: 112 },
   { tc: "02:10", label: "CONTACT", id: "contact", seconds: 130 },
 ];
@@ -35,37 +34,61 @@ export const REEL_END_TC = "02:14";
 /* ------------------------------------------------------------------ *
  * HERO
  * ------------------------------------------------------------------ */
+
 export const HERO = {
   brand: "KINETRA",
-  // [PLACEHOLDER: tagline — short, confident]
-  tagline: "[PLACEHOLDER: tagline — e.g. “Edited for impact.”]",
-  // [PLACEHOLDER: drop a real cinematic mp4 at /public/hero/hero-placeholder.mp4
-  //  and set this to "/hero/hero-placeholder.mp4" — until then the still plays.]
+
+  eyebrow: "CINEMATIC POST-PRODUCTION STUDIO",
+
+  tagline:
+    "WE TURN RAW FOOTAGE INTO VIDEOS PEOPLE CAN’T STOP WATCHING.",
+
+  subheading:
+    "Story-driven video editing for creators and brands that want sharper content, stronger retention, and a distinct visual identity.",
+
   videoSrc: "PLACEHOLDER",
+
   poster: "/hero/hero-bg.jpg",
-  primaryCta: { label: "Watch the reel", target: "work" },
-  secondaryCta: { label: "Start a project", target: "contact" },
+
+ primaryCta: { label: "Watch our work", target: "work" },   // was "Watch the reel"
+
+  secondaryCta: {
+    label: "START A PROJECT",
+    target: "contact",
+  },
 };
 
 /* ------------------------------------------------------------------ *
- * PORTFOLIO — horizontal filmstrip. Swap videoSrc/thumbnail per clip.
+ * PORTFOLIO
  * ------------------------------------------------------------------ */
-export type ClipCategory = "Short-Form" | "Long-Form" | "Motion Graphics";
+
+export type ClipCategory =
+  | "Short-Form"
+  | "Long-Form"
+  | "Motion Graphics";
 
 export type Clip = {
   id: string;
   title: string;
   category: ClipCategory;
   duration: string;
-  // [PLACEHOLDER: real clip video files — drop mp4s here]
   videoSrc: string;
   thumbnail: string;
+};
+
+export const WORK = {
+  eyebrow: "SELECTED WORK",
+
+  heading: "EDITING THAT EARNS ATTENTION.",
+
+  description:
+    "A selection of story-driven edits built to hold attention, strengthen brands, and make every second count.",
 };
 
 export const CLIPS: Clip[] = [
   {
     id: "clip-1",
-    title: "[PLACEHOLDER: clip title]",
+    title: "HIGH-RETENTION REEL",
     category: "Short-Form",
     duration: "0:32",
     videoSrc: "PLACEHOLDER",
@@ -73,7 +96,7 @@ export const CLIPS: Clip[] = [
   },
   {
     id: "clip-2",
-    title: "[PLACEHOLDER: clip title]",
+    title: "CINEMATIC SOCIAL FILM",
     category: "Short-Form",
     duration: "0:28",
     videoSrc: "PLACEHOLDER",
@@ -81,7 +104,7 @@ export const CLIPS: Clip[] = [
   },
   {
     id: "clip-3",
-    title: "[PLACEHOLDER: clip title]",
+    title: "YOUTUBE STORY EDIT",
     category: "Long-Form",
     duration: "4:12",
     videoSrc: "PLACEHOLDER",
@@ -89,7 +112,7 @@ export const CLIPS: Clip[] = [
   },
   {
     id: "clip-4",
-    title: "[PLACEHOLDER: clip title]",
+    title: "CREATOR DOCUMENTARY",
     category: "Long-Form",
     duration: "6:48",
     videoSrc: "PLACEHOLDER",
@@ -97,7 +120,7 @@ export const CLIPS: Clip[] = [
   },
   {
     id: "clip-5",
-    title: "[PLACEHOLDER: clip title]",
+    title: "BRAND MOTION SYSTEM",
     category: "Motion Graphics",
     duration: "0:45",
     videoSrc: "PLACEHOLDER",
@@ -105,7 +128,7 @@ export const CLIPS: Clip[] = [
   },
   {
     id: "clip-6",
-    title: "[PLACEHOLDER: clip title]",
+    title: "CINEMATIC TITLE SEQUENCE",
     category: "Motion Graphics",
     duration: "1:20",
     videoSrc: "PLACEHOLDER",
@@ -114,87 +137,134 @@ export const CLIPS: Clip[] = [
 ];
 
 /* ------------------------------------------------------------------ *
- * SERVICES — three packages.
+ * SERVICES
  * ------------------------------------------------------------------ */
-export type Service = {
-  name: string;
-  // [PLACEHOLDER: real prices]
-  price: string;
-  cadence: string;
-  turnaround: string;
-  deliverables: string[];
-  cta: string;
-  featured?: boolean;
+
+export const SERVICES_CONTENT = {
+  eyebrow: "SERVICES",
+
+  heading: "EDITING BUILT TO PERFORM.",
+
+  description:
+    "Whether you need a single cinematic edit or a long-term editing partner, every project is crafted to elevate your content, strengthen your brand, and keep people watching.",
 };
 
 export const SERVICES: Service[] = [
   {
-    name: "Starter",
-    price: "[PLACEHOLDER: price]",
+    name: "LAUNCH",
+
+    price: "Starting at $195",
+
     cadence: "/ video",
-    turnaround: "5–7 day turnaround",
+
+    turnaround: "",
+
+    description:
+      "Perfect for creators who need premium short-form edits that are polished, engaging, and ready to publish.",
+
     deliverables: [
-      "1 short-form edit",
-      "Captions + basic sound design",
-      "1 round of revisions",
-      "Vertical + square exports",
+      "Story-driven editing",
+      "Professional captions",
+      "Sound design",
+      "Color correction",
+      "Licensed music",
+      "2 revisions",
+      "Platform-ready exports",
     ],
-    cta: "Start with Starter",
+
+    cta: "START YOUR PROJECT",
   },
+
   {
-    name: "Pro",
-    price: "[PLACEHOLDER: price]",
-    cadence: "/ video",
-    turnaround: "3–5 day turnaround",
+    name: "SIGNATURE EDIT",
+
+    price: "Starting at $595",
+
+    cadence: "/ project",
+
+    turnaround: "5–7 Day Turnaround",
+
+    description:
+      "Our complete cinematic editing package for brands and creators who want every video to stand out.",
+
     deliverables: [
-      "Short- or long-form edit",
-      "Cinematic color + sound design",
-      "Motion titles & light VFX",
-      "3 rounds of revisions",
-      "Multi-aspect exports",
+      "Short-form or long-form editing",
+      "Storytelling & pacing",
+      "Advanced sound design",
+      "Professional color grading",
+      "Custom motion graphics",
+      "Stock footage integration",
+      "Light VFX & compositing",
+      "Thumbnail optimization",
+      "Multi-platform exports",
+      "3 revisions",
     ],
-    cta: "Go Pro",
+
+    cta: "BOOK SIGNATURE EDIT",
+
     featured: true,
   },
+
   {
-    name: "Premium",
-    price: "[PLACEHOLDER: price]",
-    cadence: "/ project",
-    turnaround: "Custom turnaround",
+    name: "CONTENT PARTNERSHIP",
+
+    price: "Starting at $2,750",
+
+    cadence: "/ month",
+
+    turnaround: "Priority Monthly Workflow",
+
+    description:
+      "A dedicated editing partnership for creators and businesses publishing content consistently every month.",
+
     deliverables: [
-      "Full long-form + derivative shorts",
-      "Advanced VFX & motion graphics",
-      "Pro color grade + mix",
-      "Unlimited revisions (fair-use)",
-      "Dedicated edit slot",
+      "Dedicated monthly editing capacity",
+      "Short-form & long-form editing",
+      "Priority turnaround",
+      "Advanced motion graphics",
+      "Monthly content planning",
+      "Priority revisions",
+      "Direct communication",
+      "Multi-platform delivery",
+      "Consistent creative direction",
     ],
-    cta: "Request Premium",
+
+    cta: "BOOK A DISCOVERY CALL",
   },
 ];
 
-// [PLACEHOLDER: per-video + monthly retainer terms]
 export const SERVICES_FOOTNOTE =
-  "[PLACEHOLDER: per-video and monthly retainer options available on request — exact terms to be added.]";
+  "Pricing may vary depending on footage length, editing complexity, turnaround time, and project requirements. Custom quotes are available for every project.";
 
 /* ------------------------------------------------------------------ *
  * ABOUT
  * ------------------------------------------------------------------ */
+
 export const ABOUT = {
-  // [PLACEHOLDER: editor name]
-  name: "[YOUR NAME]",
+  eyebrow: "ABOUT KINETRA",
+
+  heading: "YOUR FOOTAGE. OUR OBSESSION.",
+
+  name: "KINETRA",
+
   photo: "/about/about.jpg",
-  // [PLACEHOLDER: short bio]
-  bio: "[PLACEHOLDER: short bio — a paragraph on who [YOUR NAME] is, the kind of work Kinetra makes, and the philosophy behind the edit. Keep it tight, confident, and human.]",
-  stats: [
-    { value: "[X]+", label: "EDITS" },
-    { value: "[X]", label: "YRS" },
-    { value: "[X]", label: "NICHES" },
-  ],
+
+  bio:
+    "Kinetra is a cinematic post-production studio built around one principle: every second has to earn attention. We combine storytelling, pacing, sound design, color, and motion to transform raw footage into content that feels intentional, distinctive, and worth watching.",
+
+  secondaryBio:
+    "We work with creators and brands that care about craft and understand that strong editing is not decoration. It is the difference between content people scroll past and content they remember.",
+
+  stats: [],
 };
 
 /* ------------------------------------------------------------------ *
- * TESTIMONIALS
+ * CLIENT RESULTS / TESTIMONIALS
+ *
+ * Do not publish fabricated testimonials.
+ * Keep this array empty until real client quotes exist.
  * ------------------------------------------------------------------ */
+
 export type Testimonial = {
   quote: string;
   name: string;
@@ -202,82 +272,84 @@ export type Testimonial = {
   headshot: string;
 };
 
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    // [PLACEHOLDER: real quote]
-    quote:
-      "[PLACEHOLDER: testimonial quote — what it felt like working with Kinetra and the result it drove.]",
-    name: "[PLACEHOLDER: name]",
-    role: "[PLACEHOLDER: platform / role]",
-    headshot: "/testimonials/headshot-1.jpg",
-  },
-  {
-    quote:
-      "[PLACEHOLDER: testimonial quote — focus on craft, turnaround, or growth.]",
-    name: "[PLACEHOLDER: name]",
-    role: "[PLACEHOLDER: platform / role]",
-    headshot: "/testimonials/headshot-2.jpg",
-  },
-  {
-    quote:
-      "[PLACEHOLDER: testimonial quote — a creator on how the edit elevated their brand.]",
-    name: "[PLACEHOLDER: name]",
-    role: "[PLACEHOLDER: platform / role]",
-    headshot: "/testimonials/headshot-3.jpg",
-  },
-  {
-    quote:
-      "[PLACEHOLDER: testimonial quote — a brand or influencer on retention / reach.]",
-    name: "[PLACEHOLDER: name]",
-    role: "[PLACEHOLDER: platform / role]",
-    headshot: "/testimonials/headshot-1.jpg",
-  },
-];
+export const TESTIMONIALS_CONTENT = {
+  eyebrow: "CLIENTS",
+
+  heading: "THE WORK SPEAKS. CLIENTS CONFIRM IT.",
+
+  emptyState:
+    "REAL CLIENT STORIES COMING SOON.",
+};
+
+export const TESTIMONIALS: Testimonial[] = [];
 
 /* ------------------------------------------------------------------ *
  * PROCESS
  * ------------------------------------------------------------------ */
+
 export type ProcessStep = {
   step: string;
   title: string;
   description: string;
 };
 
+export const PROCESS_CONTENT = {
+  eyebrow: "PROCESS",
+
+  heading: "FROM RAW FOOTAGE TO FINAL CUT.",
+
+  description:
+    "A focused production workflow designed to keep communication clear, revisions controlled, and projects moving.",
+};
+
 export const PROCESS: ProcessStep[] = [
   {
     step: "01",
-    title: "Discovery Call",
+
+    title: "SEND THE BRIEF",
+
     description:
-      "[PLACEHOLDER: a short call to align on goals, audience, references, and tone before a frame is touched.]",
+      "Tell us what you’re creating, your goals, references, audience, footage, and deadline. We review the project and define the right editing direction.",
   },
+
   {
     step: "02",
-    title: "Footage & Brief",
+
+    title: "WE EDIT",
+
     description:
-      "[PLACEHOLDER: you send footage and a brief; Kinetra logs everything, picks selects, and locks the cut direction.]",
+      "We build the story, refine the pacing, shape the sound, develop the visual treatment, and turn your footage into the first polished cut.",
   },
+
   {
     step: "03",
-    title: "Edit & Revisions",
+
+    title: "YOU REVIEW",
+
     description:
-      "[PLACEHOLDER: first cut lands fast, then we refine — pacing, color, sound, and motion — through structured revision rounds.]",
+      "You receive the first cut through a structured review process. Feedback is consolidated, revisions are made, and the edit is refined.",
   },
+
   {
     step: "04",
-    title: "Delivery",
+
+    title: "READY TO PUBLISH",
+
     description:
-      "[PLACEHOLDER: final masters + platform-ready exports delivered clean, with project files available on request.]",
+      "Final masters and platform-ready exports are delivered clean, organized, and ready to publish.",
   },
 ];
 
 /* ------------------------------------------------------------------ *
  * CONTACT
  * ------------------------------------------------------------------ */
+
 export const PROJECT_TYPES = [
-  "Short-form edit",
-  "Long-form edit",
+  "Short-form content",
+  "YouTube / long-form video",
+  "Brand content",
   "Motion graphics / VFX",
-  "Retainer / ongoing",
+  "Monthly content partnership",
   "Not sure yet",
 ];
 
@@ -286,29 +358,58 @@ export const BUDGET_RANGES = [
   "$500 – $1,500",
   "$1,500 – $5,000",
   "$5,000+",
-  "Let's discuss",
+  "LET’S DISCUSS",
 ];
 
 export const CONTACT = {
-  // [PLACEHOLDER: direct email — used in the error state + footer]
-  email: "[PLACEHOLDER: you@kinetra.com]",
-  successMessage: "Message sent — I'll reply within 48 hours.",
+  eyebrow: "START A PROJECT",
+
+  heading: "YOUR NEXT VIDEO SHOULD BE BETTER THAN YOUR LAST.",
+
+  description:
+    "Tell us what you’re creating, what you need, and when you need it. We’ll review the project and reply with availability, scope, and next steps.",
+
+  email: "abderrahim.bouakaz@his.edu.dz",
+
+  responseTime: "TYPICAL RESPONSE TIME: WITHIN 48 HOURS",
+
+  submitLabel: "SEND PROJECT DETAILS",
+
+  successMessage:
+    "PROJECT RECEIVED — WE’LL REVIEW THE DETAILS AND REPLY WITHIN 48 HOURS.",
+
   errorMessage:
-    "Something went wrong on my end. Try again, or email me directly at [PLACEHOLDER: you@kinetra.com].",
+    "SOMETHING WENT WRONG. TRY AGAIN OR CONTACT US DIRECTLY BY EMAIL.",
 };
 
 /* ------------------------------------------------------------------ *
  * FOOTER / SOCIALS
  * ------------------------------------------------------------------ */
+
 export const SOCIALS = [
-  { label: "Instagram", href: "#" },
-  { label: "TikTok", href: "#" },
-  { label: "YouTube", href: "#" },
+  {
+    label: "INSTAGRAM",
+    href: "[PLACEHOLDER: INSTAGRAM URL]",
+  },
+  {
+    label: "TIKTOK",
+    href: "[PLACEHOLDER: TIKTOK URL]",
+  },
+  {
+    label: "YOUTUBE",
+    href: "[PLACEHOLDER: YOUTUBE URL]",
+  },
 ];
 
 export const FOOTER = {
   brand: "KINETRA",
-  email: "[PLACEHOLDER: you@kinetra.com]",
+
+  positioning:
+    "CINEMATIC POST-PRODUCTION FOR CREATORS AND BRANDS.",
+
+  email: "abderrahim.bouakaz@his.edu.dz",
+
   copyright: `© ${new Date().getFullYear()} Kinetra. All rights reserved.`,
+
   endMarker: "END 02:14",
 };
