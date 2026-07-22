@@ -22,21 +22,24 @@ type Status = "idle" | "submitting" | "success" | "error";
 type FormState = {
   name: string;
   email: string;
+  phone: string;
   handle: string;
   projectType: string;
   budget: string;
   message: string;
+  company: string;
 };
 
-const EMPTY: FormState = {
+const EMPTY = {
   name: "",
   email: "",
+  phone: "",
   handle: "",
   projectType: "",
   budget: "",
   message: "",
+  company: "",
 };
-
 /**
  * Contact — 02:10 CONTACT
  * Posts to /api/contact (server-validated, persisted via Prisma).
