@@ -1,12 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
-
+import { adminMiddleware } from "@/lib/admin/admin-middleware";
 /**
  * Content Security Policy middleware.
  *
  * Disabled during development because React/Next.js dev mode relies on eval()
  * for debugging. Enabled automatically in production.
  */
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+
+  const adminResponse = await adminMiddleware(request);
+
+if (adminResponse) {
+  return adminResponse;
+}
   // Disable CSP in development.
   if (process.env.NODE_ENV === "development") {
     return NextResponse.next();
