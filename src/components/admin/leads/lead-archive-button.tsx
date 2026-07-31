@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Link from "next/link";
-import { Archive, ArchiveRestore, Eye, MoreHorizontal } from "lucide-react";
+import { Archive, ArchiveRestore, Loader2 } from "lucide-react";
 
 import {
   archiveLeadAction,
@@ -19,35 +18,28 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 
 /**
- * Kinetra CRM — per-row lead actions (Phase 3).
+ * Kinetra CRM — archive / restore control for the lead detail page (Phase 4).
  *
- * View → /admin/leads/[id] (the Lead Details surface that Phase 4 expands).
- * Archive is confirm-gated; Restore is immediate. Both call server actions
- * that revalidate the list, so the table refreshes without a manual reload.
+ * Reuses the exact Phase 3 server actions (archiveLeadAction /
+ * restoreLeadAction), so list and detail behave identically. Archived is a
+ * state flag (archived_at) alongside the pipeline status — not a status
+ * value — which keeps the Phase 3 list filters working unchanged.
  */
 
-interface LeadRowActionsProps {
+interface LeadArchiveButtonProps {
   leadId: string;
   leadName: string;
   isArchived: boolean;
 }
 
-export function LeadRowActions({
+export function LeadArchiveButton({
   leadId,
   leadName,
   isArchived,
-}: LeadRowActionsProps) {
+}: LeadArchiveButtonProps) {
   const { toast } = useToast();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -88,44 +80,43 @@ export function LeadRowActions({
     });
   }
 
+  if (isArchived) {
+    return (
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="gap-2"
+        onClick={runRestore}
+        disabled={isPending}
+      >
+        {isPending ? (
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+        ) : (
+          <ArchiveRestore className="h-4 w-4" aria-hidden="true" />
+        )}
+        Restore lead
+      </Button>
+    );
+  }
+
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            aria-label={`Actions for ${leadName}`}
-            disabled={isPending}
-          >
-            <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-44">
-          <DropdownMenuLabel className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-            Lead actions
-          </DropdownMenuLabel>
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/leads/${leadId}`}>
-              <Eye className="h-4 w-4" aria-hidden="true" />
-              View
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          {isArchived ? (
-            <DropdownMenuItem onSelect={runRestore}>
-              <ArchiveRestore className="h-4 w-4" aria-hidden="true" />
-              Restore
-            </DropdownMenuItem>
-          ) : (
-            <DropdownMenuItem onSelect={() => setConfirmOpen(true)}>
-              <Archive className="h-4 w-4" aria-hidden="true" />
-              Archive
-            </DropdownMenuItem>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="gap-2 text-muted-foreground hover:text-foreground"
+        onClick={() => setConfirmOpen(true)}
+        disabled={isPending}
+      >
+        {isPending ? (
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+        ) : (
+          <Archive className="h-4 w-4" aria-hidden="true" />
+        )}
+        Archive lead
+      </Button>
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
@@ -133,8 +124,7 @@ export function LeadRowActions({
             <AlertDialogTitle>Archive this lead?</AlertDialogTitle>
             <AlertDialogDescription>
               {leadName} will be hidden from the active list. Nothing is
-              deleted — you can restore it anytime from the
-              &ldquo;Archived&rdquo; view.
+              deleted — you can restore it anytime.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

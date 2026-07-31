@@ -3,10 +3,17 @@ import "server-only";
 import { cache } from "react";
 
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-import { isLeadStatus, type Lead, type LeadStatus } from "@/types/crm";
+import {
+  isLeadStatus,
+  type Lead,
+  type LeadActivity,
+  type LeadEmail,
+  type LeadNote,
+  type LeadStatus,
+} from "@/types/crm";
 
 /**
- * Kinetra CRM — Leads data layer (Phase 3).
+ * Kinetra CRM — Leads data layer (Phase 3, extended in Phases 4–5).
  *
  * Server-only query + URL-param utilities for /admin/leads. Every function
  * assumes the caller has already been authorized via requireAdmin() (done in
@@ -286,3 +293,104 @@ export function formatLeadSource(source: string | null | undefined): string {
   if (!source || source === "website") return "Website form";
   return source.charAt(0).toUpperCase() + source.slice(1);
 }
+
+/* ========================================================================== */
+/* Phase 4 — Lead Details & Workflow                                          */
+/* ========================================================================== */
+
+/**
+ * Internal notes for a lead, oldest → newest (conversation order).
+ */
+export async function fetchLeadNotes(leadId: string): Promise<LeadNote[]> {
+  const admin = createSupabaseAdminClient();
+
+  const { data, error } = await admin
+    .from("lead_notes")
+    .select("*")
+    .eq("lead_id", leadId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    throw new Error(`Failed to load notes: ${error.message}`);
+  }
+
+  return data ?? [];
+}
+
+const ACTIVITY_LIMIT = 100;
+
+/**
+ * Activity timeline for a lead, newest → first. Capped at the most recent
+ * 100 events — plenty for an agency pipeline while keeping the page light.
+ */
+export async function fetchLeadActivities(
+  leadId: string,
+): Promise<LeadActivity[]> {
+  const admin = createSupabaseAdminClient();
+
+  const { data, error } = await admin
+    .from("lead_activities")
+    .select("*")
+    .eq("lead_id", leadId)
+    .order("created_at", { ascending: false })
+    .limit(ACTIVITY_LIMIT);
+
+  if (error) {
+    throw new Error(`Failed to load activity: ${error.message}`);
+  }
+
+  return data ?? [];
+}
+
+/**
+ * Outbound emails for a lead, oldest → newest (chronological, matching the
+ * notes convention). Phase 5.
+ */
+export async function fetchLeadEmails(leadId: string): Promise<LeadEmail[]> {
+  const admin = createSupabaseAdminClient();
+
+  const { data, error } = await admin
+    .from("lead_emails")
+    .select("*")
+    .eq("lead_id", leadId)
+    .order("sent_at", { ascending: true });
+
+  if (error) {
+    throw new Error(`Failed to load emails: ${error.message}`);
+  }
+
+  return data ?? [];
+}
+
+export interface AdminDirectoryEntry {
+  id: string;
+  label: string;
+}
+
+/**
+ * id → display label for every admin (small roster; one query). Used to
+ * attribute notes and timeline events. Wrapped in React cache() so the
+ * detail page's parallel fetches share one request.
+ */
+export const fetchAdminDirectory = cache(
+  async (): Promise<Map<string, AdminDirectoryEntry>> => {
+    const admin = createSupabaseAdminClient();
+
+    const { data, error } = await admin
+      .from("admin_users")
+      .select("id, display_name, email");
+
+    if (error) {
+      // Attribution is non-critical chrome — degrade to an empty directory.
+      console.error("[admin/leads] directory fetch failed:", error.message);
+      return new Map();
+    }
+
+    return new Map(
+      (data ?? []).map((row) => [
+        row.id,
+        { id: row.id, label: row.display_name ?? row.email },
+      ]),
+    );
+  },
+);  

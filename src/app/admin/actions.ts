@@ -83,22 +83,10 @@ export async function signInAction(
 
   const supabase = await createSupabaseServerClient();
 
- const { data, error } = await supabase.auth.signInWithPassword({
-  email: parsed.data.email,
-  password: parsed.data.password,
-});
-
-console.log("========== LOGIN DEBUG ==========");
-console.log("Error:", error);
-console.log("User:", data.user);
-console.log("Session:", data.session);
-
-if (data.user) {
-  const allowed = await isAllowlistedAdmin(data.user.id);
-  console.log("Allowlisted:", allowed);
-  console.log("User ID:", data.user.id);
-}
-console.log("=================================");
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: parsed.data.email,
+    password: parsed.data.password,
+  });
 
   if (error || !data.user) {
     // Generic on purpose: no account enumeration.
@@ -122,4 +110,4 @@ export async function signOutAction(): Promise<void> {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
   redirect("/admin/login");
-}
+}   

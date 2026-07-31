@@ -38,6 +38,7 @@ type LeadRow = {
   updated_at: string | null;
   status_changed_at: string | null;
   archived_at: string | null;
+  updated_by: string | null;
 };
 
 type AdminUserRow = {
@@ -65,6 +66,17 @@ type LeadActivityRow = {
   type: string;
   payload: Json;
   created_at: string;
+};
+
+type LeadEmailRow = {
+  id: string;
+  lead_id: string;
+  sent_by: string | null;
+  subject: string;
+  body: string;
+  delivery_status: string;
+  has_attachments: boolean;
+  sent_at: string;
 };
 
 type AdminNotificationRow = {
@@ -106,6 +118,7 @@ export type Database = {
           updated_at?: string | null;
           status_changed_at?: string | null;
           archived_at?: string | null;
+          updated_by?: string | null;
         };
         Update: Partial<LeadRow>;
         Relationships: [];
@@ -149,6 +162,21 @@ export type Database = {
         Update: Partial<LeadActivityRow>;
         Relationships: [];
       };
+      lead_emails: {
+        Row: LeadEmailRow;
+        Insert: {
+          id?: string;
+          lead_id: string;
+          sent_by?: string | null;
+          subject: string;
+          body: string;
+          delivery_status?: string;
+          has_attachments?: boolean;
+          sent_at?: string;
+        };
+        Update: Partial<LeadEmailRow>;
+        Relationships: [];
+      };
       admin_notifications: {
         Row: AdminNotificationRow;
         Insert: {
@@ -181,6 +209,39 @@ export type Database = {
       kinetra_is_admin: {
         Args: Record<string, never>;
         Returns: boolean;
+      };
+      kinetra_budget_value: {
+        Args: { p_budget: string | null };
+        Returns: number;
+      };
+      kinetra_analytics_summary: {
+        Args: { p_from: string; p_to: string; p_source?: string | null };
+        Returns: Json;
+      };
+      kinetra_analytics_breakdowns: {
+        Args: { p_from: string; p_to: string; p_source?: string | null };
+        Returns: Json;
+      };
+      kinetra_analytics_trend: {
+        Args: {
+          p_from: string;
+          p_to: string;
+          p_source?: string | null;
+          p_bucket?: string;
+        };
+        Returns: {
+          bucket_start: string;
+          lead_count: number;
+          won_count: number;
+        }[];
+      };
+      kinetra_analytics_heatmap: {
+        Args: { p_from: string; p_to: string; p_source?: string | null };
+        Returns: {
+          dow: number;
+          hour: number;
+          activity_count: number;
+        }[];
       };
     };
     Enums: Record<never, never>;

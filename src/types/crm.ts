@@ -13,6 +13,7 @@ export type Lead = Tables<"leads">;
 export type AdminUser = Tables<"admin_users">;
 export type LeadNote = Tables<"lead_notes">;
 export type LeadActivity = Tables<"lead_activities">;
+export type LeadEmail = Tables<"lead_emails">;
 export type AdminNotification = Tables<"admin_notifications">;
 export type AdminSetting = Tables<"admin_settings">;
 
@@ -58,6 +59,7 @@ export const ACTIVITY_TYPES = [
   "note_deleted",
   "lead_archived",
   "lead_restored",
+  "email_sent",
 ] as const;
 
 export type ActivityType = (typeof ACTIVITY_TYPES)[number];
