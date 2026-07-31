@@ -365,3 +365,61 @@ export function LeadSourcesChart({ sourceCounts }: LeadSourcesChartProps) {
 
   return <Donut data={data} ariaLabel="Lead sources distribution" />; 
 } 
+
+/* ─────────────────────── Revenue sparkline (Phase 7) ───────────────────── */
+
+interface RevenueSparklineProps {
+  data: TrendPoint[];
+  heightClass?: string;
+}
+
+/**
+ * Minimal axis-less area chart of estimated won revenue per bucket
+ * (TrendPoint.wonValue, powered by the migration-8 trend function).
+ */
+export function RevenueSparkline({
+  data,
+  heightClass = "h-[120px]",
+}: RevenueSparklineProps) {
+  const points = data.map((p) => ({
+    label: format(new Date(p.bucketStart), "MMM d"),
+    value: p.wonValue,
+  }));
+
+  return (
+    <div
+      className={`${heightClass} w-full`}
+      role="img"
+      aria-label="Estimated won revenue sparkline"
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={points} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
+          <defs>
+            <linearGradient id="kinetraRevenue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={COLORS.emerald} stopOpacity={0.35} />
+              <stop
+                offset="100%"
+                stopColor={COLORS.emerald}
+                stopOpacity={0.02}
+              />
+            </linearGradient>
+          </defs>
+          <XAxis dataKey="label" hide />
+          <YAxis hide />
+          <Tooltip
+            contentStyle={TOOLTIP_STYLE}
+            formatter={(value: number) => [usd.format(value), "Est. revenue"]}
+          />
+          <Area
+            type="monotone"
+            dataKey="value"
+            name="Est. revenue"
+            stroke={COLORS.emerald}
+            strokeWidth={2}
+            fill="url(#kinetraRevenue)"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
