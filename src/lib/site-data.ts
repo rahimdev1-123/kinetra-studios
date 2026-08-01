@@ -87,29 +87,29 @@ export const WORK = {
 
 export const CLIPS: Clip[] = [
   {
-    id: "clip-1",
-    title: "HIGH-RETENTION REEL",
-    category: "Short-Form",
-    duration: "0:32",
-    videoSrc: "PLACEHOLDER",
-    thumbnail: "/portfolio/clip-1.jpg",
-  },
-  {
-    id: "clip-2",
-    title: "CINEMATIC SOCIAL FILM",
-    category: "Short-Form",
-    duration: "0:28",
-    videoSrc: "PLACEHOLDER",
-    thumbnail: "/portfolio/clip-2.jpg",
-  },
-  {
-    id: "clip-3",
-    title: "YOUTUBE STORY EDIT",
-    category: "Long-Form",
-    duration: "4:12",
-    videoSrc: "PLACEHOLDER",
-    thumbnail: "/portfolio/clip-3.jpg",
-  },
+  id: "clip-1",
+  title: "Cinematic motion graphics",   // also fixed the "Cenimatic" typo 😉
+  category: "Long-Form",
+  duration: "0:42",
+  videoSrc: "/portfoliovids/iran.mp4",
+  thumbnail: "/portfolio/clip-1.jpg",
+},
+{
+  id: "clip-2",
+  title: "CINEMATIC SOCIAL FILM",
+  category: "Long-Form",
+  duration: "0:14",
+  videoSrc: "/portfoliovids/vox-titanic.mp4",
+  thumbnail: "/portfolio/clip-2.jpg",
+},
+{
+  id: "clip-3",
+  title: "YOUTUBE STORY EDIT",
+  category: "Long-Form",
+  duration: "0:12",
+  videoSrc: "/portfoliovids/final-video.mp4",
+  thumbnail: "/portfolio/clip-3.jpg",
+},
   {
     id: "clip-4",
     title: "CREATOR DOCUMENTARY",

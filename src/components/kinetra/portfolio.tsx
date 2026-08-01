@@ -179,7 +179,7 @@ export function Portfolio() {
                 </p>
               </div>
               <span className="kin-mono rounded border border-dashed border-highlight/40 px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-highlight/80">
-                Placeholder — drop an mp4 to play
+                EDITED IN PREMIERE PRO + AFTER EFFECTS
               </span>
             </div>
           )}
