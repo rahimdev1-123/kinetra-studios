@@ -16,6 +16,9 @@ export type LeadActivity = Tables<"lead_activities">;
 export type LeadEmail = Tables<"lead_emails">;
 export type AdminNotification = Tables<"admin_notifications">;
 export type AdminSetting = Tables<"admin_settings">;
+export type FollowUpTask = Tables<"follow_up_tasks">;
+export type NotificationPreference = Tables<"notification_preferences">;
+export type NotificationTemplate = Tables<"notification_templates">;
 
 /** Ordered pipeline — drives the status workflow UI in later phases. */
 export const LEAD_STATUSES = [
@@ -63,3 +66,51 @@ export const ACTIVITY_TYPES = [
 ] as const;
 
 export type ActivityType = (typeof ACTIVITY_TYPES)[number];
+
+/** Notification event types (Phase 8) — client-safe, like LEAD_STATUSES. */
+export const NOTIFICATION_TYPES = [
+  "new_lead",
+  "lead_assigned",
+  "lead_updated",
+  "status_changed",
+  "lead_archived",
+  "lead_restored",
+  "email_sent",
+  "email_failed",
+  "task_due",
+  "task_overdue",
+  "reminder",
+  "manual",
+] as const;
+
+export type NotificationType = (typeof NOTIFICATION_TYPES)[number];
+
+export const NOTIFICATION_TYPE_LABELS: Record<NotificationType, string> = {
+  new_lead: "New lead",
+  lead_assigned: "Lead assigned",
+  lead_updated: "Lead updated",
+  status_changed: "Status changed",
+  lead_archived: "Lead archived",
+  lead_restored: "Lead restored",
+  email_sent: "Email sent",
+  email_failed: "Email failed",
+  task_due: "Task due",
+  task_overdue: "Task overdue",
+  reminder: "Reminder",
+  manual: "Announcement",
+};
+
+export function isNotificationType(value: unknown): value is NotificationType {
+  return (
+    typeof value === "string" &&
+    (NOTIFICATION_TYPES as readonly string[]).includes(value)
+  );
+}
+
+export const NOTIFICATION_PRIORITIES = ["low", "normal", "high"] as const;
+export type NotificationPriority = (typeof NOTIFICATION_PRIORITIES)[number];
+
+/** Coerce arbitrary stored values to a known priority (defensive). */
+export function toNotificationPriority(value: unknown): NotificationPriority {
+  return value === "low" || value === "high" ? value : "normal";
+}

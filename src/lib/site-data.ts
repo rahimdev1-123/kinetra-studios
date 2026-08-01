@@ -149,6 +149,21 @@ export const SERVICES_CONTENT = {
     "Whether you need a single cinematic edit or a long-term editing partner, every project is crafted to elevate your content, strengthen your brand, and keep people watching.",
 };
 
+/**
+ * Type for SERVICES entries (repair: this annotation was referenced below
+ * but never defined, breaking `tsc --noEmit`). Type-only — no data change.
+ */
+export interface Service {
+  name: string;
+  price: string;
+  cadence: string;
+  turnaround: string;
+  description: string;
+  deliverables: string[];
+  cta: string;
+  featured?: boolean;
+}
+
 export const SERVICES: Service[] = [
   {
     name: "LAUNCH",
@@ -255,7 +270,10 @@ export const ABOUT = {
   secondaryBio:
     "We work with creators and brands that care about craft and understand that strong editing is not decoration. It is the difference between content people scroll past and content they remember.",
 
-  stats: [],
+  // Type-only repair: an empty literal infers never[], which broke
+  // about.tsx's stat.label/stat.value access in `tsc --noEmit`. Same empty
+  // array at runtime — nothing renders until stats are added.
+  stats: [] as { label: string; value: string }[],
 };
 
 /* ------------------------------------------------------------------ *

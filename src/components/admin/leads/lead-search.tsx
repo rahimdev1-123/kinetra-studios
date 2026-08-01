@@ -94,4 +94,4 @@ export function LeadSearch({ defaultValue }: LeadSearchProps) {
       </span>
     </div>
   );
-}
+} 

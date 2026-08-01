@@ -44,8 +44,7 @@ import type { LeadOption } from "@/lib/admin/dashboard";
  * Compose Email (lead picker → routes to the lead's detail workspace, where
  * the Phase 5 composer lives — no duplicate composer), Export CSV (REUSES
  * the Phase 6 export action, last 30 days), Analytics (link), and
- * Notifications (disabled placeholder, consistent with the sidebar — the
- * notification center is a future phase).
+ * Notifications (links to the Phase 8 notification center).
  */
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -357,15 +356,11 @@ export function QuickActions({ recentLeads }: QuickActionsProps) {
         type="button"
         size="sm"
         variant="outline"
-        className="gap-2 text-muted-foreground"
-        disabled
-        title="The notification center arrives in a later phase"
+        className="gap-2"
+        onClick={() => router.push("/admin/notifications")}
       >
         <Bell className="h-4 w-4" aria-hidden="true" />
         Notifications
-        <span className="font-mono text-[9px] uppercase tracking-wider">
-          soon
-        </span>
       </Button>
     </div>
   );

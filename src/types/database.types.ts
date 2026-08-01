@@ -39,6 +39,7 @@ type LeadRow = {
   status_changed_at: string | null;
   archived_at: string | null;
   updated_by: string | null;
+  assigned_to: string | null;
 };
 
 type AdminUserRow = {
@@ -86,8 +87,35 @@ type AdminNotificationRow = {
   type: string;
   title: string;
   body: string | null;
+  priority: string;
+  icon: string | null;
+  link: string | null;
+  metadata: Json;
+  archived_at: string | null;
   read_at: string | null;
   created_at: string;
+};
+
+type NotificationPreferenceRow = {
+  user_id: string;
+  realtime_toggle: boolean;
+  email_toggle: boolean;
+  browser_toggle: boolean;
+  digest_frequency: string;
+  quiet_hours_start: number | null;
+  quiet_hours_end: number | null;
+  updated_at: string;
+};
+
+type NotificationTemplateRow = {
+  id: string;
+  name: string;
+  subject: string;
+  body: string;
+  type: string;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
 };
 
 type AdminSettingRow = {
@@ -95,6 +123,17 @@ type AdminSettingRow = {
   value: Json;
   updated_by: string | null;
   updated_at: string;
+};
+
+type FollowUpTaskRow = {
+  id: string;
+  lead_id: string;
+  admin_id: string;
+  due_date: string;
+  completed: boolean;
+  completed_at: string | null;
+  notes: string | null;
+  created_at: string;
 };
 
 export type Database = {
@@ -119,6 +158,7 @@ export type Database = {
           status_changed_at?: string | null;
           archived_at?: string | null;
           updated_by?: string | null;
+          assigned_to?: string | null;
         };
         Update: Partial<LeadRow>;
         Relationships: [];
@@ -186,10 +226,45 @@ export type Database = {
           type: string;
           title: string;
           body?: string | null;
+          priority?: string;
+          icon?: string | null;
+          link?: string | null;
+          metadata?: Json;
+          archived_at?: string | null;
           read_at?: string | null;
           created_at?: string;
         };
         Update: Partial<AdminNotificationRow>;
+        Relationships: [];
+      };
+      notification_preferences: {
+        Row: NotificationPreferenceRow;
+        Insert: {
+          user_id: string;
+          realtime_toggle?: boolean;
+          email_toggle?: boolean;
+          browser_toggle?: boolean;
+          digest_frequency?: string;
+          quiet_hours_start?: number | null;
+          quiet_hours_end?: number | null;
+          updated_at?: string;
+        };
+        Update: Partial<NotificationPreferenceRow>;
+        Relationships: [];
+      };
+      notification_templates: {
+        Row: NotificationTemplateRow;
+        Insert: {
+          id?: string;
+          name: string;
+          subject: string;
+          body: string;
+          type?: string;
+          updated_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<NotificationTemplateRow>;
         Relationships: [];
       };
       admin_settings: {
@@ -201,6 +276,21 @@ export type Database = {
           updated_at?: string;
         };
         Update: Partial<AdminSettingRow>;
+        Relationships: [];
+      };
+      follow_up_tasks: {
+        Row: FollowUpTaskRow;
+        Insert: {
+          id?: string;
+          lead_id: string;
+          admin_id: string;
+          due_date: string;
+          completed?: boolean;
+          completed_at?: string | null;
+          notes?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<FollowUpTaskRow>;
         Relationships: [];
       };
     };
@@ -233,7 +323,16 @@ export type Database = {
           bucket_start: string;
           lead_count: number;
           won_count: number;
+          won_value: number;
         }[];
+      };
+      kinetra_task_center: {
+        Args: { p_limit?: number };
+        Returns: Json;
+      };
+      kinetra_generate_due_notifications: {
+        Args: Record<string, never>;
+        Returns: number;
       };
       kinetra_analytics_heatmap: {
         Args: { p_from: string; p_to: string; p_source?: string | null };
